@@ -83,7 +83,7 @@ private long[] parts;
 
 
         for(int i=0;i<parts.length;++i) {
-            temp[i][0] = i+1;
+            temp[i][0] = i+1;  //the points start from (1, f(1)) and not  (0, f(0))
             temp[i][1] = parts[i];
 
         }
