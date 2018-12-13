@@ -62,7 +62,10 @@ private long[] parts;
             si[i]=rand.nextInt((int)secret-1)+10;
 
         }
-
+//si[1]=175;
+   //     si[2]=176;
+       // si[1]=748;
+     //   si[2]=215;
         System.out.println("czesci wielomianu"+" "+si[2]+" "+si[1]+" "+si[0]);
 //liczymy fragmenty
         for(int i=0;i<n;++i)
@@ -93,27 +96,44 @@ return temp;
         //Computationally Efficient Approach  Lagrange polynomials method
 double[] li=new double[k];
 
-   /* li[0]=(czesci[1][0]*czesci[2][0]*czesci[0][1]/((double) (czesci[0][0]-czesci[1][0])*(czesci[0][0]-czesci[2][0])  ))%p;
-
-    li[1]=(czesci[0][0]*czesci[2][0]*czesci[1][1]/((double) (czesci[1][0]-czesci[0][0])*(czesci[1][0]-czesci[2][0])  ))%p;
-
-    li[2]=(czesci[0][0]*czesci[1][0]*czesci[2][1]/((double) (czesci[2][0]-czesci[0][0])*(czesci[2][0]-czesci[1][0])  ))%p;
-
-
-        System.out.println(li[0]+li[1]+li[2]);*/
 
 
         for(int j=0;j<t;++j) {
-li[j]=1;
-         for(int m=0;m<t;++m)
-             if(j!=m)
-            li[j] *= (czesci[m][0]/(double)(czesci[m][0]-czesci[j][0]));
+            li[j] = 1;
+            for (int m = 0; m < t; ++m)
+                if (j != m)
+                    li[j] *= (czesci[m][0] / (double) (czesci[m][0] - czesci[j][0]));
 
-            li[j]=(li[j]*czesci[j][1])%p;
 
+
+            li[j] = (li[j] * czesci[j][1])%p ;
         }
 
-        return (long) Math.round(li[0]+li[1]+li[2]);
+
+
+//if((long) Math.round(li[0]+li[1]+li[2])<0) {
+    for (int j = 0; j < t; ++j) {
+        li[j] = 1;
+        for (int m = 0; m < t; ++m)
+            if (j != m)
+                li[j] *= (czesci[m][0] / (double) (czesci[m][0] - czesci[j][0]));
+
+        //Dla dowolnej liczby całkowitej a i dowolnej liczby naturalnej b istnieje tylko jedna para liczb całkowitych k i r taka,
+        // że a=k⋅b+r, gdzie 0≤r<b. czyli stąd wynika że a-k*b=r
+        if ((li[j] * czesci[j][1]) < 0) {
+            long kb = ((((long) (li[j] * czesci[j][1])) / p) - 1) * p;
+            long a = (long) (li[j] * czesci[j][1]);
+            li[j] = a - kb;
+
+
+        } else
+            li[j] = (li[j] * czesci[j][1])%p ;    //   ai<P
+
+    }
+//}
+
+
+        return (long) Math.round(li[0]+li[1]+li[2]+li[3])% p;   //S<P
     }
 }
 
